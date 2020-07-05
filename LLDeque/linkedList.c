@@ -24,11 +24,47 @@
 /* ************************************************************************
 	Structs Link and LinkedList
 ************************************************************************ */
+struct Link {
+    TYPE value;
+    struct Link *next;
+ };
+
+ struct LinkedList {
+    struct Link *sentinel;
+ ;
 
 
 /* ************************************************************************
 	Linked List Functions
 ************************************************************************ */
+
+LinkedList* linkedListCreate() {
+	struct LinkedList *list = (struct LinkedList*)malloc(sizeof(struct LinkedList));
+	assert(list != NULL);
+	list->sentinel->next = NULL;
+	list->sentinel->value = 0;
+	return list;
+}
+	 
+void deletelinkedList(LinkedList* list) {
+	assert(list != NULL);
+	free(list);
+}
+
+int sizelinkedList(LinkedList* myList) {
+	assert(myList->sentinel->value != 0);
+	return myList->sentinel->value;
+}
+	 
+int isEmptyLinkedList(LinkedList* myList) {
+	assert(myList->sentinel->value != 0);
+	if (myList->sentinel->value == 0) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
 
 
 /* ************************************************************************

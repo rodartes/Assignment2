@@ -57,8 +57,8 @@ int sizelinkedList(LinkedList* myList) {
 }
 	 
 int isEmptyLinkedList(LinkedList* myList) {
-	assert(myList->sentinel->value != 0);
-	if (myList->sentinel->value == 0) {
+	assert(myList->sentinel->next != NULL);
+	if (myList->sentinel->next == NULL) {
 		return 1;
 	}
 	else {

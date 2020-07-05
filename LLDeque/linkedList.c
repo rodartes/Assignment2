@@ -66,6 +66,16 @@ int isEmptyLinkedList(LinkedList* myList) {
 	}
 }
 
+void printLinkedList(LinkedList* list) {
+	assert(list != NULL); 
+	struct Link *node = list->sentinel->next; 
+	assert(node != NULL);   
+	while (node->next != NULL) { 
+		printf("%d", node->value);
+		node = node->next;     
+	}
+}
+
 
 /* ************************************************************************
 	Deque Functions

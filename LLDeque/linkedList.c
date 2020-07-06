@@ -81,7 +81,71 @@ void printLinkedList(LinkedList* list) {
 	Deque Functions
 ************************************************************************ */
 
+/*returns the value of the link at deque's front, Coded by: Samantha Rodarte*/
+TYPE frontDeque(Deque* myDeque){
+
+}			
+
+/*returns the value of the link at deque's end, Coded by: Samantha Rodarte*/
+TYPE backDeque(Deque* myDeque){
+
+}				
+
+/*removes the link at deque's front, Coded by: Samantha Rodarte*/
+void removeFrontDeque(Deque* myDeque){
+
+}			
+
+/*removes the link at deque's end, Coded by: Samantha Rodarte*/
+void removeBackDeque(Deque* myDeque){
+
+}
+
+/*prints the value of all links in the deque from front to back, Coded by: Samantha Rodarte*/
+void printDeque(Deque* myDeque){
+
+}
 
 /* ************************************************************************
 	Bag Functions
 ************************************************************************ */
+
+/*allocates and initializes the bag, Coded by: Samantha Rodarte*/
+Bag* bagCreate(){
+
+}	
+
+/*deallocates and deletes the bag, Coded by: Samantha Rodarte*/
+void deleteBag(Bag* myBag){
+
+}			
+
+/*returns the size of bag, Coded by: Samantha Rodarte*/
+int sizeBag(Bag* myBag){
+
+}
+
+/*returns 1 if the bag is empty or 0 if it isn't, Coded by: Samantha Rodarte*/
+int isBagEmpty(Bag* myBag){
+
+}
+
+/*adds an element to the bag, Coded by: Samantha Rodarte*/
+void addBag(Bag* myBag, TYPE value){
+
+}
+
+/*returns 1 if an element can be found within the bag or 0 if it isn't, Coded by: Samantha Rodarte*/
+int containsBag(Bag* myBag, TYPE value){
+
+}
+
+/*removes an element fromt the bag, Coded by: Samantha Rodarte*/
+void removeBag(Bag* myBag, TYPE value){
+	
+}
+
+/*prints the values of the links in the bag from front to back, Coded by: Samantha Rodarte*/
+void printBag(Bag* myBag){
+
+}

@@ -142,6 +142,24 @@ int isEmptyDeque(Deque* myDeque) {
    }
 }
 
+void addFrontDeque(Deque* myDeque, TYPE value) {
+   struct Link *deque = malloc(sizeof(struct Link));
+   assert(myDeque != 0);
+   deque->value = value;
+   deque->prev = myDeque->frontSentinel->prev;
+   deque->next = myDeque->frontSentinel->next;
+   myDeque->size++;
+}
+
+void addBackDeque(Deque* myDeque, TYPE value) {
+   struct Link *deque = malloc(sizeof(struct Link));
+   assert(myDeque != 0);
+   deque->value = value;
+   deque->prev = myDeque->backSentinel->prev;
+   deque->next = myDeque->backSentinel->next;
+   myDeque->size++;
+}
+
 /*returns the value of the link at deque's front, Coded by: Samantha Rodarte*/
 TYPE frontDeque(Deque* myDeque){
 

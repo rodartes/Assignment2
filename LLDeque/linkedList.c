@@ -156,7 +156,7 @@ void addBackDeque(Deque* myDeque, TYPE value) {
    assert(myDeque != 0);
    deque->value = value;
    deque->prev = myDeque->backSentinel->prev;
-   deque->next = myDeque->backSentinel->next;
+   deque->next = myDeque->backSentinel;
    myDeque->size++;
 }
 

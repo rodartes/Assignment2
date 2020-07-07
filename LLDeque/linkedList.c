@@ -53,9 +53,9 @@ LinkedList* linkedListCreate() {
     assert(list->frontSentinel != 0); 			// check if the front sentinel is empty
     list->backSentinel = malloc(sizeof(struct LinkedList)); // allocate memory for the back sentinel
     assert(list->backSentinel != 0); 			// check if the back sentinel is empty
-    node->next = 0; 					// initialize next as empty
     list->frontSentinel->next = list->backSentinel; 	// set the node next to front sentinel as the back sentinel
     list->backSentinel = list->frontSentinel; 		// set the back sentinel as the front sentinel
+    node->next = 0; 					// initialize next as empty
     list->size = 0; 					// intialize size as empty
     return list; 					// return list
 }

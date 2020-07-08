@@ -42,164 +42,147 @@ struct LinkedList {
 	Linked List Functions
 ************************************************************************ */
 
+
 LinkedList* linkedListCreate() {
-    struct LinkedList *list;
-    struct Link *node;
-    list = malloc(sizeof(struct LinkedList)); 		// allocate memory into list
-    assert(list != NULL);	 			// check if list is NULL
-    node = malloc(sizeof(struct Link)); 		// allocate memory into node
-    assert(node != NULL); 				// check if node is NULL
-    list->frontSentinel = malloc(sizeof(struct LinkedList)); // allocate memory for the front sentinel
-    assert(list->frontSentinel != 0); 			// check if the front sentinel is empty
-    list->backSentinel = malloc(sizeof(struct LinkedList)); // allocate memory for the back sentinel
-    assert(list->backSentinel != 0); 			// check if the back sentinel is empty
-    list->frontSentinel->next = list->backSentinel; 	// set the node next to front sentinel as the back sentinel
-    list->backSentinel = list->frontSentinel; 		// set the back sentinel as the front sentinel
-    node->next = 0; 					// initialize next as empty
-    list->size = 0; 					// intialize size as empty
-    return list; 					// return list
-}
-	 
-void deletelinkedList(LinkedList* list) {
-    assert(list != NULL); 				// check if list is empty
-    struct Link *node = list->frontSentinel->next; 	// allocate memory for node
-    free(node); 					// free node
+   struct LinkedList *list;
+   struct Link *node;
+   list = malloc(sizeof(struct LinkedList));
+   assert(list != NULL);
+   node = malloc(sizeof(struct Link));
+   assert(node != NULL);
+   list->frontSentinel = malloc(sizeof(struct LinkedList));
+   assert(list->frontSentinel != 0);
+   list->backSentinel = malloc(sizeof(struct LinkedList));
+
+   assert(list->backSentinel != 0);
+   node->next = 0;
+   list->frontSentinel->next = list->backSentinel;
+   list->backSentinel->prev = list->frontSentinel;
+   list->size = 0;
+   return list;
 }
 
 int sizelinkedList(LinkedList* myList) {
-   assert(myList->size != 0); 				// check if size is empty
-   return myList->size; 				// return the size of the link list
-}
-	 
-int isEmptyLinkedList(LinkedList* myList) {
-   assert(myList->size != 0); 				// check if size is empty
-   if (myList->size == 0) { 				// if the size is empty 
-      return 1; // true
-   }
-   else {
-      return 0; // false
-    }
+   assert(myList->size != 0);
+   return myList->size;
 }
 
+int isEmptyLinkedList(LinkedList* myList) {
+   return myList->size == 0;
+} 
+  
 static void addLinkBefore(LinkedList* list, Link* link, TYPE value) {
-   assert(list != NULL); 				// check if the list is empty
-   struct Link *node = (Link*)malloc(sizeof(struct Link)); // allocate memory for node
-   node->value = value; 				// set the value fron node->value as this->value 
-   node->next = link; 					// set the next node as link 
-   link->next = node; 					// set the net node of link as node
+   struct Link *node = malloc(sizeof(struct Link));
+   assert(list != 0);
+   node->value = value;
+   node->prev = link->prev;
+   node->next = link;
+   link->prev->next = node;
+   link->prev = node;
+   list->size++;
 }
 
 static void removeLink(LinkedList* list, Link* link) {
-   assert(list != NULL); 				// check if the list is empty
-   list->frontSentinel->next = link->next; 		// set the next node of front sentinel as the next node of link
-   list->backSentinel->next = link->next; 		// set the next node of back sentinel as the next nodee of link
-   free(link); 						// free link
+   assert(list != NULL);
+   list->frontSentinel->next = link->next;
+   list->backSentinel->next = link->next;
+   free(link);
+   list->size--;
+}
+
+void deletelinkedList(LinkedList* list) {
+   assert(list != NULL);
+   removeLink(list, list->frontSentinel->next);
+   removeLink(list, list->backSentinel->prev);
+   free(list->frontSentinel);
+   free(list->backSentinel);
+   free(list);
 }
 
 
-
-void printLinkedList(LinkedList* list) {
-   assert(list != NULL); 				// check if the list is empty
-   struct Link *node = list->frontSentinel->next; 	// allocate memory for node 
-   assert(node != NULL); 				// check if node is empty
-   while (list->backSentinel != NULL) { 		// while the back sentinel isn't null
-       printf("%d", node->value); 			// print the value of the node
-       node = node->next; 				// set node to the next node to keep searching
-    }
+void printLinkedList(LinkedList* list) {  
+   assert(list != NULL);
+   struct Link *node = list->frontSentinel->next;
+   assert(node != NULL);
+   while (node != list->backSentinel) {
+      printf("%d", node->value);
+      node = node->next;
+   }
 }
 
-
-/* ************************************************************************
-	Deque Functions
-************************************************************************ */
-
-Deque* DequeCreate(){
-   struct LinkedList *dq;
-   dq->frontSentinel = (struct Link *) malloc(sizeof(struct Link));
-   assert(dq->frontSentinel != 0);
-   dq->backSentinel = (struct Link *) malloc(sizeof(struct Link));
-   assert(dq->backSentinel != 0);
+Deque* dequeCreate() {
+   struct LinkedList *deque;
+   deque = malloc(sizeof(struct LinkedList));
+   assert(deque != NULL);
+   deque->frontSentinel = malloc(sizeof(struct LinkedList));
+   assert(deque->frontSentinel != 0);
+   deque->backSentinel = malloc(sizeof(struct LinkedList));
+   assert(deque->backSentinel != 0);
+   deque->frontSentinel->next = deque->backSentinel;
+   deque->backSentinel->prev = deque->frontSentinel;
+   deque->size = 0;
+   return deque;
 }
 
 void deleteDeque(Deque* myDeque) {
    assert(myDeque != NULL);
-   struct Link *deque = myDeque->frontSentinel->next;
-   free(deque);
+   removeLink(myDeque, myDeque->frontSentinel->next);
+   removeLink(myDeque, myDeque->backSentinel->prev);
+   free(myDeque->frontSentinel);
+   free(myDeque->backSentinel);
+   free(myDeque);
 }
 
 int sizeDeque(Deque* myDeque) {
-   assert(myDeque->size != 0);
-   return myDeque->size;
+   return myDeque->size == 0;
 }
 
 int isEmptyDeque(Deque* myDeque) {
-   assert(myDeque->size != 0);
-   if (myDeque->size == 0) {
-      return 1;
-   }
-   else {
-      return 0;
-   }
+   return myDeque->size == 0;
 }
 
 void addFrontDeque(Deque* myDeque, TYPE value) {
-   struct Link *deque = malloc(sizeof(struct Link));
-   assert(myDeque != 0);
-   deque->value = value;
-   deque->prev = myDeque->frontSentinel->prev;
-   deque->next = myDeque->frontSentinel->next;
-   myDeque->size++;
+   addLinkBefore(myDeque, myDeque->frontSentinel->next, value);
 }
 
 void addBackDeque(Deque* myDeque, TYPE value) {
-   struct Link *deque = malloc(sizeof(struct Link));
-   assert(myDeque != 0);
-   deque->value = value;
-   deque->prev = myDeque->backSentinel->prev;
-   deque->next = myDeque->backSentinel;
-   myDeque->size++;
+   addLinkBefore(myDeque, myDeque->backSentinel, value);
 }
 
-/*returns the value of the link at deque's front, Coded by: Samantha Rodarte*/
+
+/* *************************************************************************/
 TYPE frontDeque(Deque* myDeque){
-	struct Link *deque = malloc(sizeof(struct Link));
-	assert(myDeque != 0);
-	return myDeque -> frontSentinel -> value;
+   assert(myDeque != NULL) ;
+   return myDeque->frontSentinel->next->value;
+
 }			
 
 /*returns the value of the link at deque's end, Coded by: Samantha Rodarte*/
 TYPE backDeque(Deque* myDeque){
-	struct Link *deque = malloc(sizeof(struct Link));
-	assert(myDeque != 0);
-	return myDeque -> backSentinel -> value;
+   assert(myDeque != NULL) ; 
+   return myDeque->backSentinel->prev->value;
 }				
 
 /*removes the link at deque's front, Coded by: Samantha Rodarte*/
 void removeFrontDeque(Deque* myDeque){
-	struct Link * dlink = myDeque->frontSentinel->next;
-	if(dlink!=NULL){ /*the top element exists*/
-	myDeque->frontSentinel->next = dlink->next;
-	free(dlink);
-	}
+   assert(myDeque != NULL);
+   removeLink(myDeque, myDeque->frontSentinel->next);
 }			
 
 /*removes the link at deque's end, Coded by: Samantha Rodarte*/
 void removeBackDeque(Deque* myDeque){
-	assert(myDeque != NULL); 				
-   	struct Link *dlink = myDeque->frontSentinel->next;
-   	while (dlink->next != NULL)			
-       dlink = dlink->next; 	
-	free(dlink);
+   assert(myDeque != NULL);
+   removeLink(myDeque, myDeque->backSentinel->prev);
 }
 
 /*prints the value of all links in the deque from front to back, Coded by: Samantha Rodarte*/
 void printDeque(Deque* myDeque){
    	assert(myDeque!= NULL); 				
    	struct Link *dlink = myDeque->frontSentinel->next;
-   	while (dlink != NULL) { 	
-       printf("%d", dlink->value); 			
-       dlink = dlink->next; 				
-	}
+	while (dlink != myDeque->backSentinel) {
+	   printf("%d", dlink->value);
+	   dlink = dlink->next;
+        }
 }
 
 /* ************************************************************************
@@ -209,15 +192,25 @@ void printDeque(Deque* myDeque){
 /*allocates and initializes the bag, Coded by: Samantha Rodarte*/
 Bag* bagCreate(){
    struct LinkedList *b;
-   b->frontSentinel = (struct Link *) malloc(sizeof(struct Link));
+   b = malloc(sizeof(struct LinkedList));
+   assert(b != 0);
+   b->frontSentinel = malloc(sizeof(struct LinkedList));
    assert(b->frontSentinel != 0);
+   b->backSentinel = malloc(sizeof(struct LinkedList));
+   assert(b->backSentinel != 0);
+   b->frontSentinel->next = b->backSentinel;
+   b->backSentinel->prev = b->frontSentinel;
+   b->size = 0;
+   return b;
 }	
 
 /*deallocates and deletes the bag, Coded by: Samantha Rodarte*/
 void deleteBag(Bag* myBag){
 	assert(myBag != NULL);
-   	struct Link *bLink = myBag->frontSentinel->next;
-  	 free(bLink);
+	removeLink(myBag, myBag->frontSentinel->next);
+        free(myBag->frontSentinel);
+        free(myBag->backSentinel);
+        free(myBag);
 }			
 
 /*returns the size of bag, Coded by: Samantha Rodarte*/
@@ -227,31 +220,21 @@ int sizeBag(Bag* myBag){
 
 /*returns 1 if the bag is empty or 0 if it isn't, Coded by: Samantha Rodarte*/
 int isBagEmpty(Bag* myBag){
-   assert(myBag != NULL);
-   if (myBag -> size == 0)
-      return 1; // true
-   else
-      return 0; // false
+   return myBag->size == 0;
 }
 
 /*adds an element to the bag, Coded by: Samantha Rodarte*/
 void addBag(Bag* myBag, TYPE value){
-	struct Link * new = (struct Link *) malloc(sizeof(struct Link));
-	assert (new != 0);
-	new->value = value;
-	new->next = myBag->frontSentinel->next;
-	myBag->frontSentinel->next = new;
+	 addLinkBefore(myBag, myBag->frontSentinel->next, value);
 }
 
 /*returns 1 if an element can be found within the bag or 0 if it isn't, Coded by: Samantha Rodarte*/
 int containsBag(Bag* myBag, TYPE value){
-	struct Link *previous = myBag->frontSentinel;
 	struct Link *current = myBag->frontSentinel->next;
-	while (current != NULL){
+	while (current != myBag->backSentinel){
 		if (current->value == value) {
 		return 1;
 		}
-	previous = current;
 	current = current->next;
 	}
 	return 0;
@@ -259,15 +242,11 @@ int containsBag(Bag* myBag, TYPE value){
 
 /*removes an element fromt the bag, Coded by: Samantha Rodarte*/
 void removeBag(Bag* myBag, TYPE value){
-	struct Link *previous = myBag->frontSentinel;
 	struct Link *current = myBag->frontSentinel->next;
-	while (current != NULL){
+	while (current != myBag->backSentinel){
 		if (current->value == value) {
-		previous->next = current->next;
-		free(current);
-		return;
+		   removeLink(myBag, current);
 		}
-	previous = current;
 	current = current->next;
 	}
 }
@@ -276,8 +255,8 @@ void removeBag(Bag* myBag, TYPE value){
 void printBag(Bag* myBag){
 	assert(myBag != NULL); 				
    	struct Link *bLink = myBag->frontSentinel->next;
-   	while (bLink != NULL) { 	
-       printf("%d", bLink->value); 			
-       bLink = bLink->next; 				
-	}
+	while (bLink != myBag->backSentinel) {
+	   printf("%d", bLink->value);
+	   bLink = bLink->next;
+        }
 }

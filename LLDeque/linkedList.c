@@ -217,7 +217,7 @@ Bag* bagCreate(){
 void deleteBag(Bag* myBag){
 	assert(myBag != NULL);
    	struct Link *bLink = myBag->frontSentinel->next;
-  	 free(bLink);
+  	free(bLink);
 }			
 
 /*returns the size of bag, Coded by: Samantha Rodarte*/
@@ -236,11 +236,12 @@ int isBagEmpty(Bag* myBag){
 
 /*adds an element to the bag, Coded by: Samantha Rodarte*/
 void addBag(Bag* myBag, TYPE value){
-	struct Link * new = (struct Link *) malloc(sizeof(struct Link));
-	assert (new != 0);
-	new->value = value;
-	new->next = myBag->frontSentinel->next;
-	myBag->frontSentinel->next = new;
+	struct Link *new = malloc(sizeof(struct Link));
+   	assert(myBag != 0);
+   	new->value = value;
+   	new->prev = myBag->frontSentinel->prev;
+   	new->next = myBag->frontSentinel->next;
+   	myBag->size++;
 }
 
 /*returns 1 if an element can be found within the bag or 0 if it isn't, Coded by: Samantha Rodarte*/

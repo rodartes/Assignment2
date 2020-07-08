@@ -113,12 +113,12 @@ void printLinkedList(LinkedList* list) {
 	Deque Functions
 ************************************************************************ */
 
-Deque* dequeCreate() {
-   struct Linkedlist *deque;
-   deque = malloc(sizeof(struct LinkedList));
-   assert(deque != 0);
-   deque->frontSentinel->next = NULL;
-   return deque;
+Deque* DequeCreate(){
+   struct LinkedList *dq;
+   dq->frontSentinel = (struct Link *) malloc(sizeof(struct Link));
+   assert(dq->frontSentinel != 0);
+   dq->backSentinel = (struct Link *) malloc(sizeof(struct Link));
+   assert(dq->backSentinel != 0);
 }
 
 void deleteDeque(Deque* myDeque) {
@@ -162,27 +162,44 @@ void addBackDeque(Deque* myDeque, TYPE value) {
 
 /*returns the value of the link at deque's front, Coded by: Samantha Rodarte*/
 TYPE frontDeque(Deque* myDeque){
-
+	struct Link *deque = malloc(sizeof(struct Link));
+	assert(myDeque != 0);
+	return myDeque -> frontSentinel -> value;
 }			
 
 /*returns the value of the link at deque's end, Coded by: Samantha Rodarte*/
 TYPE backDeque(Deque* myDeque){
-
+	struct Link *deque = malloc(sizeof(struct Link));
+	assert(myDeque != 0);
+	return myDeque -> backSentinel -> value;
 }				
 
 /*removes the link at deque's front, Coded by: Samantha Rodarte*/
 void removeFrontDeque(Deque* myDeque){
-
+	struct Link * dlink = myDeque->frontSentinel->next;
+	if(dlink!=NULL){ /*the top element exists*/
+	myDeque->frontSentinel->next = dlink->next;
+	free(dlink);
+	}
 }			
 
 /*removes the link at deque's end, Coded by: Samantha Rodarte*/
 void removeBackDeque(Deque* myDeque){
-
+	assert(myDeque != NULL); 				
+   	struct Link *dlink = myDeque->frontSentinel->next;
+   	while (dlink->next != NULL)			
+       dlink = dlink->next; 	
+	free(dlink);
 }
 
 /*prints the value of all links in the deque from front to back, Coded by: Samantha Rodarte*/
 void printDeque(Deque* myDeque){
-
+   	assert(myDeque!= NULL); 				
+   	struct Link *dlink = myDeque->frontSentinel->next;
+   	while (dlink != NULL) { 	
+       printf("%d", dlink->value); 			
+       dlink = dlink->next; 				
+	}
 }
 
 /* ************************************************************************
@@ -191,40 +208,76 @@ void printDeque(Deque* myDeque){
 
 /*allocates and initializes the bag, Coded by: Samantha Rodarte*/
 Bag* bagCreate(){
-
+   struct LinkedList *b;
+   b->frontSentinel = (struct Link *) malloc(sizeof(struct Link));
+   assert(b->frontSentinel != 0);
 }	
 
 /*deallocates and deletes the bag, Coded by: Samantha Rodarte*/
 void deleteBag(Bag* myBag){
-
+	assert(myBag != NULL);
+   	struct Link *bLink = myBag->frontSentinel->next;
+  	 free(bLink);
 }			
 
 /*returns the size of bag, Coded by: Samantha Rodarte*/
 int sizeBag(Bag* myBag){
-
+	return myBag->size;
 }
 
 /*returns 1 if the bag is empty or 0 if it isn't, Coded by: Samantha Rodarte*/
 int isBagEmpty(Bag* myBag){
-
+   assert(myBag != NULL);
+   if (myBag -> size == 0)
+      return 1; // true
+   else
+      return 0; // false
 }
 
 /*adds an element to the bag, Coded by: Samantha Rodarte*/
 void addBag(Bag* myBag, TYPE value){
-
+	struct Link * new = (struct Link *) malloc(sizeof(struct Link));
+	assert (new != 0);
+	new->value = value;
+	new->next = myBag->frontSentinel->next;
+	myBag->frontSentinel->next = new;
 }
 
 /*returns 1 if an element can be found within the bag or 0 if it isn't, Coded by: Samantha Rodarte*/
 int containsBag(Bag* myBag, TYPE value){
-
+	struct Link *previous = myBag->frontSentinel;
+	struct Link *current = myBag->frontSentinel->next;
+	while (current != NULL){
+		if (current->value == value) {
+		return 1;
+		}
+	previous = current;
+	current = current->next;
+	}
+	return 0;
 }
 
 /*removes an element fromt the bag, Coded by: Samantha Rodarte*/
 void removeBag(Bag* myBag, TYPE value){
-	
+	struct Link *previous = myBag->frontSentinel;
+	struct Link *current = myBag->frontSentinel->next;
+	while (current != NULL){
+		if (current->value == value) {
+		previous->next = current->next;
+		free(current);
+		return;
+		}
+	previous = current;
+	current = current->next;
+	}
 }
 
 /*prints the values of the links in the bag from front to back, Coded by: Samantha Rodarte*/
 void printBag(Bag* myBag){
-
+	assert(myBag != NULL); 				
+   	struct Link *bLink = myBag->frontSentinel->next;
+   	while (bLink != NULL) { 	
+       printf("%d", bLink->value); 			
+       bLink = bLink->next; 				
+	}
 }

@@ -33,7 +33,7 @@ void printLinkedList(LinkedList* list);									// Prints the values of the link
 	Deque Interface
 ************************************************************************ */
 
-Deque* dequeCreate();							// Allocates and initializes the deque
+Deque* DequeCreate();							// Allocates and initializes the deque
 void deleteDeque(Deque* myDeque);				// Deallocates the data and deletes the deque
 int sizeDeque(Deque* myDeque);					// Returns the size of the deque
 int isEmptyDeque(Deque* myDeque);				// Returns 1 if the deque is empty and 0 otherwise
